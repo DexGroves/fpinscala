@@ -39,12 +39,34 @@ object List{
     }
     go(l, n)
   }
+
+  /* Exercise 3.5 */
+  def head[A](as: List[A]): A = as match {
+    // case Nil => ???   // Is there a null type I should use here?
+    case Cons(h, t) => h
+  }
+
+  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = {
+    def go(l: List[A], f: A => Boolean): List[A] = {
+      if (l == Nil) Nil
+      else if (f(head(l))) go(tail(l), f)
+      else Cons(head(l), go(tail(l), f))
+    }
+    go(l, f)
+  }
+
+  /* Exercise 3.6 */
+  def init[A](l: List[A]): List[A] = l match {
+    case Nil => Nil
+    case Cons(h, Nil) => Nil
+    case Cons(h, t) => Cons(h, init(t))
+  }
 }
 
 val seq5i = List(1,2,3,4,5)
 
-// List.sum(seq5i)
-
 // List.tail(seq5i)
 // List.setHead(seq5i, 100)
 // List.drop(seq5i, 3)
+// List.dropWhile(seq5i, (x: Int) => x % 2 == 0)
+// List.init(seq5i)
