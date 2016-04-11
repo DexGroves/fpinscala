@@ -47,7 +47,7 @@ object List{
 
   /* Exercise 3.5 */
   def head[A](as: List[A]): A = as match {
-    // case Nil => ???   // Is there a null type I should use here?
+    case Nil => head(as)
     case Cons(h, t) => h
   }
 
@@ -111,12 +111,13 @@ object List{
   /* Exercise 3.14 */
   def append[A](as: List[A], z: A): List[A] = {
     as match {
+      case Nil => as
       case Cons(x, Nil) => Cons(x, Cons(z, Nil))
       case Cons(x, xs) => Cons(x, append(xs, z))
     }
   }
 
-  def appendList[A](as: List[A], z: List[A]): List[A] = {
+  def appendList[A, B](as: List[A], z: List[A]): List[A] = {
     as match {
       case Nil => z
       case Cons(x, Nil) => Cons(x, z)
@@ -129,9 +130,39 @@ object List{
   def listConcat[A](as: List[List[A]]): List[A] = {
     foldLeft(as, List[A]())(appendList)
   }
+
+  /* Neverending pages of exercises */
+  /* Exercise 3.16 */
+  def addOneToListOfIntegers(ints: List[Int]): List[Int] = {
+    ints match {
+      case Nil => ints
+      case Cons(i, Nil) => Cons(i+1, Nil)
+      case Cons(i, is) => Cons(i+1, addOneToListOfIntegers(is))
+    }
+  }
+
+  /* Exercise 3.17 */
+  def doubleToString(ds: List[Double]): List[String] = {
+    foldRight(ds, Nil:List[String])((d, ds) => Cons(d.toString, ds))
+  }
+
+  /* Exercise 3.18 */
+  def map[A, B](as: List[A])(f: A => B): List[B] = {
+    foldRight(as, Nil:List[B])((x, xs) => Cons(f(x), xs))
+  }
+
+  /* Exercise 3.19 */
+  /* already did this as dropWhile */
+
+  /* Exercise 3.20 */
+  def flatMap[A, B](as: List[A])(f: A => List[B]): List[B] = {
+    // foldRight(as, Nil:List[B])(xs => appendList(f(x), flatMap(xs)(f)))
+    listConcat(map(as)(f))
+  }
 }
 
-val seq5i = List(1,2,3,4,5)
+val seq5i = List(1, 2, 3, 4, 5)
+val seq5d = List(1.1, 2.2, 3.3, 4.4, 5.5)
 
 // List.tail(seq5i)
 // List.setHead(seq5i, 100)
@@ -147,3 +178,8 @@ val seq5i = List(1,2,3,4,5)
 // List.append(seq5i, 6)
 // List.appendList(seq5i, seq5i)
 // List.listConcat(List(seq5i, seq5i, seq5i))
+// List.addOneToListOfIntegers(seq5i)
+// List.doubleToString(seq5d)
+// List.map(seq5d)(((d: Double) => d.toString))
+// List.dropWhile(seq5i, (x: Int) => x % 2 == 1)
+List.flatMap(List(1, 2, 3))(i => List(i, i))
