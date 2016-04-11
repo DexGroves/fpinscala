@@ -107,6 +107,28 @@ object List{
   def foldRightByLeft[A, B](as: List[A], z: B)(f: (B, A) => B): B = {
     foldLeft(reverse(as), z)(f)
   }
+
+  /* Exercise 3.14 */
+  def append[A](as: List[A], z: A): List[A] = {
+    as match {
+      case Cons(x, Nil) => Cons(x, Cons(z, Nil))
+      case Cons(x, xs) => Cons(x, append(xs, z))
+    }
+  }
+
+  def appendList[A](as: List[A], z: List[A]): List[A] = {
+    as match {
+      case Nil => z
+      case Cons(x, Nil) => Cons(x, z)
+      case Cons(x, xs) => Cons(x, appendList(xs, z))
+    }
+  }
+
+  /* Exercise 3.15 */
+  /* I don't know if this satisfies the linear time requirement */
+  def listConcat[A](as: List[List[A]]): List[A] = {
+    foldLeft(as, List[A]())(appendList)
+  }
 }
 
 val seq5i = List(1,2,3,4,5)
@@ -120,5 +142,8 @@ val seq5i = List(1,2,3,4,5)
 // List.foldLeft(seq5i, 1)(_ * _)
 // List.lengthLeft(seq5i)
 // List.reverse(seq5i)
-List.foldLeftByRight(seq5i, 1)(_ * _)
-List.foldRightByLeft(seq5i, 1)(_ * _)
+// List.foldLeftByRight(seq5i, 1)(_ * _)
+// List.foldRightByLeft(seq5i, 1)(_ * _)
+// List.append(seq5i, 6)
+// List.appendList(seq5i, seq5i)
+// List.listConcat(List(seq5i, seq5i, seq5i))
