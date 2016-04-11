@@ -95,14 +95,17 @@ object List{
     foldLeft(as, 0)((n: Int, a: A) => n + 1)
 
   /* Exercise 3.12 */
-  def last[A](as: List[A]): A =
-    as match {
-      case Cons(h, Nil) => h
-      case Cons(h, t) => last(t)
-    }
-
   def reverse[A](as: List[A]): List[A] = {
     foldLeft(as, List[A]())((xs, x) => Cons(x, xs))
+  }
+
+  /* Exercise 3.13 */
+  def foldLeftByRight[A, B](as: List[A], z: B)(f: (A, B) => B): B = {
+    foldRight(reverse(as), z)(f)
+  }
+
+  def foldRightByLeft[A, B](as: List[A], z: B)(f: (B, A) => B): B = {
+    foldLeft(reverse(as), z)(f)
   }
 }
 
@@ -116,4 +119,6 @@ val seq5i = List(1,2,3,4,5)
 // List.length(seq5i)
 // List.foldLeft(seq5i, 1)(_ * _)
 // List.lengthLeft(seq5i)
-List.reverse(seq5i)
+// List.reverse(seq5i)
+List.foldLeftByRight(seq5i, 1)(_ * _)
+List.foldRightByLeft(seq5i, 1)(_ * _)
