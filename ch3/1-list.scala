@@ -159,6 +159,29 @@ object List{
     // foldRight(as, Nil:List[B])(xs => appendList(f(x), flatMap(xs)(f)))
     listConcat(map(as)(f))
   }
+
+  /* Exercise 3.21 */
+  def flatMapFilter[A](as: List[A])(f: A => Boolean): List[A] = {
+    flatMap(as)((x: A) => if (f(x)) Cons(x, Nil) else Nil:List[A])
+  }
+
+  /* Exercise 3.22 */
+  def listAdd(lhs: List[Int], rhs: List[Int]): List[Int] = {
+    (lhs, rhs) match {
+      case (Nil, _) => Nil
+      case (_, Nil) => Nil
+      case (Cons(lh, lt), Cons(rh, rt)) => Cons(lh + rh, listAdd(lt, rt))
+    }
+  }
+
+  /* Exercise 3.33 */
+  def zipWith[A](lhs: List[A], rhs: List[A])(f: (A, A) => A): List[A] = {
+    (lhs, rhs) match {
+      case (Nil, _) => Nil
+      case (_, Nil) => Nil
+      case (Cons(lh, lt), Cons(rh, rt)) => Cons(f(lh, rh), zipWith(lt, rt)(f))
+    }
+  }
 }
 
 val seq5i = List(1, 2, 3, 4, 5)
@@ -182,4 +205,7 @@ val seq5d = List(1.1, 2.2, 3.3, 4.4, 5.5)
 // List.doubleToString(seq5d)
 // List.map(seq5d)(((d: Double) => d.toString))
 // List.dropWhile(seq5i, (x: Int) => x % 2 == 1)
-List.flatMap(List(1, 2, 3))(i => List(i, i))
+// List.flatMap(List(1, 2, 3))(i => List(i, i))
+// List.flatMapFilter(seq5i)((x: Int) => x % 2 == 1)
+List.listAdd(List(1,2,3), List(4,5,6))
+List.zipWith(List(1,2,3), List(4,5,6))(_ + _)
