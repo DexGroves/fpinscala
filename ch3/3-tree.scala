@@ -29,6 +29,14 @@ object Tree {
     }
     go(tree, 0)
   }
+
+  /* Exercise 3.28 */
+  def map[A](tree: Tree[A])(f: A => A): Tree[A] = {
+    tree match {
+      case Leaf(x) =>  Leaf(f(x))
+      case Branch(l, r) => Branch(map(l)(f), map(r)(f))
+    }
+  }
 }
 
 val testTree = Branch(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3)), Leaf(4))
@@ -36,3 +44,4 @@ val testTree = Branch(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3)), Leaf(4))
 Tree.size(testTree)
 Tree.maximum(testTree)
 Tree.depth(testTree)
+Tree.map(testTree)(_ * 2)
