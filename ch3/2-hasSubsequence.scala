@@ -1,8 +1,8 @@
 /* Exercise 3.24 */
-def hasSubsequence[A](search: List[A], term: List[A]): Boolean = {
+def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
   def go(n: Int): Boolean = {
-    if (n > search.length) false
-    else if (search.take(n).takeRight(term.length) == term) true
+    if (n > sup.length) false
+    else if (sup.take(n).takeRight(sub.length) == sub) true
     else go(n+1)
   }
   go(0)
