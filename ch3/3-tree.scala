@@ -21,13 +21,10 @@ object Tree {
 
   /* Exercise 3.27 */
   def depth[A](tree: Tree[A]): Int = {
-    def go(tree: Tree[A], d: Int): Int = {
-      tree match {
-        case Leaf(_) => d
-        case Branch(l, r) => go(l, d + 1) max go(r, d + 1)
-      }
+    tree match {
+      case Leaf(x) => 0
+      case Branch(l, r) => (depth(l) max depth(r)) + 1
     }
-    go(tree, 0)
   }
 
   /* Exercise 3.28 */
